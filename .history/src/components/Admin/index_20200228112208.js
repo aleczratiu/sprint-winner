@@ -1,0 +1,278 @@
+import React, { useState, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
+import { makeStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import List from '@material-ui/core/List';
+import Typography from '@material-ui/core/Typography';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
+import ListItemText from '@material-ui/core/ListItemText';
+import { withFirebase } from '../../firebase/index';
+import TextField from '@material-ui/core/TextField';
+import AddIcon from '@material-ui/icons/Add';
+import Fab from '@material-ui/core/Fab';
+import Box from '@material-ui/core/Box';
+import ListItem from '@material-ui/core/ListItem';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
+
+function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+
+    return (
+        <Typography
+            component="div"
+            role="tabpanel"
+            hidden={value !== index}
+            id={`nav-tabpanel-${index}`}
+            aria-labelledby={`nav-tab-${index}`}
+            {...other}
+        >
+            {value === index && <Box p={3}>{children}</Box>}
+        </Typography>
+    );
+}
+
+function a11yProps(index) {
+  return {
+    id: `nav-tab-${index}`,
+    'aria-controls': `nav-tabpanel-${index}`,
+  };
+}
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    flexGrow: 1,
+    backgroundColor: 'theme.palette.background.paper',
+  },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
+}));
+
+function Admin({ firebase }) {
+  const classes = useStyles();
+  const [value, setValue] = useState(0);
+  const [label, setLabel] = useState('teams');
+  const [result, setResult] = useState();
+  const [teamName, setTeamName] = useState('');
+  const [teamMembers, setTeamMembers] = useState();
+  const [selectedTeam, setSelectedTeam] = useState();
+  const [memberName, setMemberName] = useState();
+  const [memberPicture, setMemberPicture] = useState();
+
+    function getTeams() {
+        firebase.database.ref(label).once('value', (value) => {
+            if (value) {
+                setResult(value.val());
+            }
+        });
+    }
+
+    function getTeamMembers(team) {
+        console.log('selectedTeam', selectedTeam);
+        if (team || selectedTeam) {
+            console.log('teamMembers suys', teamMembers);
+            firebase.database.ref(`teams/${team || selectedTeam}/members`).once('value', (value) => {
+                if (value) {
+                    setTeamMembers(value.val());
+                }
+            });
+        }
+    }
+
+    useEffect(() => {
+        if (!result) {
+            getTeams()
+        }
+
+        if (selectedTeam && !teamMembers) {
+            getTeamMembers();
+        }
+    }, [label, result, teamMembers, selectedTeam])
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
+
+    function LinkTab(props) {
+        return (
+            <Tab
+                component="a"
+                onClick={event => {
+                    setLabel(props.label)
+                    event.preventDefault();
+                }}
+                {...props}
+            />
+        );
+    }
+
+    function handleTeams() {
+        const teams = [];
+
+        for (const id in result) {
+            teams.push(
+                <ListItem key={value} button>
+                    <ListItemSecondaryAction>
+                        <IconButton edge="end" aria-label="delete">
+                            <ListItemText
+                            primary={result[id].name}
+                            />
+                            <DeleteIcon onClick={() => handleDelete(id)} />
+                        </IconButton>
+                    </ListItemSecondaryAction>
+                </ListItem>
+            )
+        }
+
+        return teams;
+    }
+
+    function handleTeamMembers() {
+        const teams = [];
+
+        console.log('teamMembers', teamMembers);
+
+        for (const id in teamMembers) {
+            teams.push(
+                <ListItem key={value} button>
+                    <ListItemSecondaryAction>
+                        <IconButton edge="end" aria-label="delete">
+                            <ListItemText
+                            primary={teamMembers[id].name}
+                            />
+                            <ListItemText
+                            primary={teamMembers[id].profilePicture}
+                            />
+                            <DeleteIcon onClick={() => handleDeleteMember(id)} />
+                        </IconButton>
+                    </ListItemSecondaryAction>
+                </ListItem>
+            )
+        }
+
+        return teams;
+    }
+
+    function handleTeamName(event) {
+        const name = event.target.value;
+        if (name) {
+            setTeamName(name);
+        }
+    }
+
+    function handleAddTeam() {
+        firebase.database.ref('teams').push().set({name: teamName});
+        getTeams()
+    }
+
+    function handleDelete(id) {
+        console.log('id', id);
+        firebase.database.ref(`teams/${id}`).remove();
+        getTeams()
+    }
+
+    function handleDeleteMember(id) {
+        console.log('aici', id);
+        firebase.database.ref(`teams/${selectedTeam}/members/${id}`).remove();
+        getTeamMembers()
+    }
+
+    function handleChangeTeam(event) {
+        const team = event.target.value;
+        console.log('team', team)
+        setSelectedTeam(team)
+        getTeamMembers(team);
+    }
+
+    function renderTeams() {
+        console.log('result ====aici', result)
+        if (!result && label === 'members') {
+            getTeams()
+        };
+
+        const teams = [];
+
+        for (const id in result) {
+            teams.push(<MenuItem value={id}>{result[id].name}</MenuItem>)
+        }
+
+        console.log('teams', teams);
+
+        return teams;
+    }
+
+    function handleTeamMember (event) {
+        setMemberName(event.target.value)
+    }
+
+    function handleMemberPicture (event) {
+        setMemberPicture(event.target.value)
+    }
+
+    function handleAddMember () {
+        firebase.database.ref(`teams/${selectedTeam}/members`).push().set({name: memberName, profilePicture: memberPicture});
+        getTeamMembers()
+    }
+
+    return (
+        <div className={classes.root}>
+        <AppBar position="static">
+            <Tabs
+            variant="fullWidth"
+            value={value}
+            onChange={handleChange}
+            aria-label="nav tabs example"
+            >
+            <LinkTab label="teams" href="/teams" {...a11yProps(0)} />
+            <LinkTab label="members" href="/trash" {...a11yProps(1)} />
+            <LinkTab label="sprints" href="/spam" {...a11yProps(2)} />
+            <LinkTab label="votes" href="/members" {...a11yProps(3)} />
+            </Tabs>
+        </AppBar>
+        <TabPanel value={value} index={0}>
+            <TextField id="standard-basic" label="Standard" onChange={handleTeamName} />
+            <Fab color="primary" aria-label="add">
+                <AddIcon onClick={handleAddTeam} />
+            </Fab>
+            {handleTeams(result)}
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+            <FormControl className={classes.formControl}>
+                <InputLabel id="demo-simple-select-label">Team</InputLabel>
+                <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={selectedTeam}
+                    onChange={handleChangeTeam}
+                >
+                    {renderTeams()}
+                </Select>
+            </FormControl>
+            <TextField id="standard-basic" label="Name" onChange={handleTeamMember} />
+            <TextField id="standard-basic" label="Profile picture url" onChange={handleMemberPicture} />
+            <Fab color="primary" aria-label="add">
+                <AddIcon onClick={handleAddMember} />
+            </Fab>
+            {handleTeamMembers()}
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+            Page Three
+        </TabPanel>
+        <TabPanel value={value} index={3}>
+            Page Three
+        </TabPanel>
+        </div>
+    );
+}
+
+
+
+export default withAuthorization(authCondition)withFirebase(Admin);

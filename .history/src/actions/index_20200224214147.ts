@@ -1,0 +1,78 @@
+import { User } from '../models';
+
+export enum ActionTypes {
+    LOAD_USER = 'user/load',
+}
+
+export function loadUser(user: User): ILoadUserAction {
+    return {
+        type: ActionTypes.LOAD_USER,
+        payload: {
+            user,
+        },
+    };
+}
+
+export function loadingTodosFailed(): ILoadingTodosFailedAction {
+    return {
+        type: ActionTypes.LOADING_TODOS_FAILED,
+    };
+}
+
+export function addTodo(description: string): IAddTodoAction {
+    return {
+        type: ActionTypes.ADD_TODO,
+        payload: {
+            description,
+        },
+    };
+}
+
+export function addingTodo(): IAddingTodoAction {
+    return {
+        type: ActionTypes.ADDING_TODO,
+    };
+}
+
+export function addingTodoFailed(): IAddingTodoFailedAction {
+    return {
+        type: ActionTypes.ADDING_TODOS_FAILED,
+    };
+}
+
+export interface ILoadTodosAction {
+  type: ActionTypes.LOAD_TODOS;
+}
+
+export interface ILoadingTodosAction {
+  type: ActionTypes.LOADING_TODOS;
+}
+
+export interface ILoadUserAction {
+  type: ActionTypes.LOAD_USER;
+  payload: {
+    user: User;
+  }
+}
+
+export interface ILoadingTodosFailedAction {
+  type: ActionTypes.LOADING_TODOS_FAILED;
+}
+
+export interface IAddTodoAction {
+  type: ActionTypes.ADD_TODO;
+  payload: {
+    description: string;
+  }
+}
+
+export interface IAddingTodoAction {
+  type: ActionTypes.ADDING_TODO;
+}
+
+
+export interface IAddingTodoFailedAction {
+  type: ActionTypes.ADDING_TODOS_FAILED;
+}
+
+export type TodosAction = ILoadTodosAction | ILoadingTodosAction | ILoadingTodosFailedAction | IAddTodoAction | IAddingTodoAction | IAddingTodoFailedAction;
