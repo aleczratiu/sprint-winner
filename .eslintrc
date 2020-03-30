@@ -1,9 +1,9 @@
 {
     "env": {
         "es6": true,
-        "node": true
+        "browser": true
     },
-    "extends": "airbnb-base",
+    "extends": ["airbnb", "airbnb/hooks"],
     "parserOptions": {
         "sourceType": "module",
         "ecmaVersion": 2019
@@ -30,6 +30,14 @@
             "always"
         ],
         "no-await-in-loop": 1,
+        "react/jsx-indent": [2, 4],
+        "react/jsx-filename-extension": [
+            2,
+            {
+                "extensions": [".jsx",
+                ".js"]
+            }
+        ],
         "no-plusplus": [
             "error",
             {

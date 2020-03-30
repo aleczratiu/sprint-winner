@@ -18,8 +18,9 @@ nav .brand span {
 }
 
 .section-winners {
-  background: var(--bg-grey);
-  border-bottom: 1px solid var(--border);
+  padding: 5px;
+  margin-top: 10px;
+  border: 1px solid var(--border);
 }
 
 /* winner styles */
