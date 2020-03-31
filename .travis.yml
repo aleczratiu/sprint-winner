@@ -13,5 +13,4 @@ deploy:
   secret_acess_key: $AWS_SECRET
   bucket: 'www.sprintman.cf'
   region: eu-central-1
-  local_dir: public
   acl: public_read
