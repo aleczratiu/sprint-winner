@@ -11,6 +11,6 @@ deploy:
   provider: s3
   access_key_id: $AWS_KEY
   secret_acess_key: $AWS_SECRET
-  bucket: 'www.sprintman.cf'
+  bucket: 'www.sprintman.cf.s3-website.eu-central-1.amazonaws.com'
   skip_cleanup: true
   local_dir: public
