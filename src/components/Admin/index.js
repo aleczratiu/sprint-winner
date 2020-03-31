@@ -8,10 +8,8 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ListItemText from '@material-ui/core/ListItemText';
-import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import Fab from '@material-ui/core/Fab';
 import Box from '@material-ui/core/Box';
 import ListItem from '@material-ui/core/ListItem';
 import Select from '@material-ui/core/Select';
@@ -32,11 +30,11 @@ function TabPanel(props) {
 
     return (
         <Typography
-            component="div"
-            role="tabpanel"
-            hidden={value !== index}
-            id={`nav-tabpanel-${index}`}
-            aria-labelledby={`nav-tab-${index}`}
+          component="div"
+          role="tabpanel"
+          hidden={value !== index}
+          id={`nav-tabpanel-${index}`}
+          aria-labelledby={`nav-tab-${index}`}
             {...other}
         >
             {value === index && <Box p={3}>{children}</Box>}
@@ -182,6 +180,7 @@ function Admin({ firebase }) {
             getSprints();
             getActiveSprint();
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [label, result, teamMembers, selectedTeam, sprints, selectedSprintTeamForVotes]);
 
     const handleChange = (event, newValue) => {
@@ -191,8 +190,8 @@ function Admin({ firebase }) {
     function LinkTab(props) {
         return (
             <Tab
-                component="a"
-                onClick={(event) => {
+              component="a"
+              onClick={(event) => {
                     setLabel(props.label);
                     event.preventDefault();
                 }}
@@ -209,8 +208,8 @@ function Admin({ firebase }) {
                 teams.push(
                     <ListItem key={id}>
                         <ListItemText
-                            primary={result[id].name}
-                            className={classes.details}
+                          primary={result[id].name}
+                          className={classes.details}
                         />
                         <IconButton edge="end" aria-label="delete">
                             <DeleteIcon onClick={() => handleDelete(id)} />
@@ -231,12 +230,12 @@ function Admin({ firebase }) {
                 teams.push(
                     <ListItem key={id}>
                         <ListItemText
-                          primary={teamMembers[id].name}
-                          className={classes.details}
+                            primary={teamMembers[id].name}
+                            className={classes.details}
                         />
                         <ListItemText
-                          primary={teamMembers[id].profilePicture.substring(0, 45)}
-                          className={classes.details}
+                            primary={teamMembers[id].profilePicture.substring(0, 45)}
+                            className={classes.details}
                         />
                         <IconButton edge="end" aria-label="delete">
                             <DeleteIcon onClick={() => handleDeleteMember(id)} />
@@ -285,18 +284,18 @@ function Admin({ firebase }) {
                 sprintsList.push(
                     <ListItem key={id}>
                         <ListItemText
-                            primary={sprints[id].name}
-                            className={classes.details}
+                          primary={sprints[id].name}
+                          className={classes.details}
                         />
                         <ListItemText
-                            primary={sprints[id].createdOn}
-                            className={classes.details}
+                          primary={sprints[id].createdOn}
+                          className={classes.details}
                         />
                         <Select
-                            labelId="demo-simple-select-label"
-                            id={id}
-                            value={selectedSprintTeam}
-                            onChange={handleChangeSprintTeam}
+                          labelId="demo-simple-select-label"
+                          id={id}
+                          value={selectedSprintTeam}
+                          onChange={handleChangeSprintTeam}
                         >
                             {getSprintTeams(sprints[id].teams)}
                         </Select>
@@ -304,14 +303,14 @@ function Admin({ firebase }) {
                             <DeleteIcon onClick={() => handleDeleteSprint(id)} />
                         </IconButton>
                         <FormControlLabel
-                            control={(
-                              <GreenCheckbox
-                                    key={id}
-                                    checked={activeSprint.id === id && activeSprint.active}
-                                    onChange={handleActiveSprint}
-                                    value={selectedSprintTeam}
-                                    id={id}
-                                />
+                          control={(
+                                <GreenCheckbox
+                                key={id}
+                                checked={activeSprint.id === id && activeSprint.active}
+                                onChange={handleActiveSprint}
+                                value={selectedSprintTeam}
+                                id={id}
+                              />
                             )}
                         />
                     </ListItem>,
@@ -417,14 +416,14 @@ function Admin({ firebase }) {
                             reasons.push(<ListItem className={classes.winnerSection} key={vote}>
                                 <img alt="bs" src={members[user].profilePicture} style={{ width: 50, height: 50, borderRadius: '50%' }} />
                                 <ListItemText
-                                    primary={members[user].name}
-                                    className={classes.details}
+                                  primary={members[user].name}
+                                  className={classes.details}
                                 />
                                 <ListItemText
-                                    primary={members[user].votes[vote].reason}
-                                    className={classes.details}
+                                  primary={members[user].votes[vote].reason}
+                                  className={classes.details}
                                 />
-                            </ListItem>);
+                                         </ListItem>);
                         }
                     }
                 }
@@ -442,18 +441,18 @@ function Admin({ firebase }) {
                 sprintsList.push(
                     <ListItem key={id}>
                         <ListItemText
-                            primary={sprints[id].name}
-                            className={classes.details}
+                          primary={sprints[id].name}
+                          className={classes.details}
                         />
                         <ListItemText
-                            primary={sprints[id].createdOn}
-                            className={classes.details}
+                          primary={sprints[id].createdOn}
+                          className={classes.details}
                         />
                         <Select
-                            labelId="demo-simple-select-label"
-                            id={id}
-                            value={selectedSprintTeamForVotes}
-                            onChange={(event) => selectSprintTeamForVotes({ teamId: event.target.value, sprintId: id })}
+                          labelId="demo-simple-select-label"
+                          id={id}
+                          value={selectedSprintTeamForVotes}
+                          onChange={(event) => selectSprintTeamForVotes({ teamId: event.target.value, sprintId: id })}
                         >
                             {getSprintTeams(sprints[id].teams)}
                         </Select>
@@ -469,11 +468,11 @@ function Admin({ firebase }) {
         <div className={classes.root}>
             <AppBar position="static">
                 <Tabs
-                    variant="fullWidth"
-                    value={value}
-                    onChange={handleChange}
-                    aria-label="nav tabs example"
-                    classes={{ indicator: classes.colorSecondary }}
+                  variant="fullWidth"
+                  value={value}
+                  onChange={handleChange}
+                  aria-label="nav tabs example"
+                  classes={{ indicator: classes.colorSecondary }}
                 >
                     <LinkTab label="teams" href="/teams" {...a11yProps(0)} />
                     <LinkTab label="members" href="/trash" {...a11yProps(1)} />
@@ -498,10 +497,10 @@ function Admin({ firebase }) {
                         <FormControl className={classes.formControl}>
                             <InputLabel id="demo-simple-select-label">Team</InputLabel>
                             <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                value={selectedTeam}
-                                onChange={handleChangeTeam}
+                              labelId="demo-simple-select-label"
+                              id="demo-simple-select"
+                              value={selectedTeam}
+                              onChange={handleChangeTeam}
                             >
                                 {renderTeams()}
                             </Select>

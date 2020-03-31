@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { AppBar, Toolbar, IconButton } from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Brightness4Icon from '@material-ui/icons/Brightness4';
 import Brightness7Icon from '@material-ui/icons/Brightness7';
@@ -25,7 +24,6 @@ const useStyles = makeStyles((theme) => ({
 const Navbar = ({ firebase, history, handleToggleTheme, theme }) => {
     const classes = useStyles();
     const [isAdmin, setAdmin] = useState(false);
-    const navBarBtns = [];
 
     const renderMenu = (authUser, firebase) => {
         firebase.database.ref('admin').on('value', (adminInfo) => {
@@ -59,8 +57,6 @@ const Navbar = ({ firebase, history, handleToggleTheme, theme }) => {
                 <Button onClick={firebase.doSignOut}>Log out</Button>
             </div>
         );
-
-        return navBarBtns;
     };
 
     function pushHistory(location) {

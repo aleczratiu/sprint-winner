@@ -57,6 +57,7 @@ const Winners = ({ firebase }) => {
                 setSprintId(result.sprintId);
             }
         });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const deleteWinners = () => {
@@ -121,14 +122,14 @@ const Winners = ({ firebase }) => {
                                     reasons.push(<ListItem className={classes.winnerSection} key={vote}>
                                         <Avatar alt={members[user].name} src={members[user].profilePicture} />
                                         <ListItemText
-                                            primary={members[user].name}
-                                            className={classes.details}
+                                          primary={members[user].name}
+                                          className={classes.details}
                                         />
                                         <ListItemText
-                                            primary={members[user].votes[vote].reason}
-                                            className={classes.details}
+                                          primary={members[user].votes[vote].reason}
+                                          className={classes.details}
                                         />
-                                    </ListItem>);
+                                                 </ListItem>);
                                 }
                             }
                         }
@@ -158,12 +159,12 @@ const Winners = ({ firebase }) => {
                                 <ListItem className={classes.winnerSection}>
                                     Member
                                     <ListItemText
-                                        primary="Name"
-                                        className={classes.details}
+                                      primary="Name"
+                                      className={classes.details}
                                     />
                                     <ListItemText
-                                        primary="Reason"
-                                        className={classes.details}
+                                      primary="Reason"
+                                      className={classes.details}
                                     />
                                 </ListItem>
                                 {getWinners()}

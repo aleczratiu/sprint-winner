@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -57,6 +58,7 @@ const VoteForm = ({ firebase }) => {
         firebase.database.ref('activeSprint/status').on('value', (value) => {
             setVoteStatus(value.val());
         });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [voters, teamId, sprintId, totalVotes, voteStatus]);
 
     function getActiveVoters() {
@@ -102,8 +104,9 @@ const VoteForm = ({ firebase }) => {
                 for (const user in members) {
                     if (members[user].votes) {
                         console.log('members[user].vote', members[user].votes);
+                        // eslint-disable-next-line guard-for-in
                         for (const vote in members[user].votes) {
-                            votes++;
+                            votes += 1;
                         }
                     }
                 }
