@@ -12,6 +12,5 @@ deploy:
   access_key_id: $AWS_KEY
   secret_acess_key: $AWS_SECRET
   bucket: 'www.sprintman.cf'
-  skip_cleanup: true
   region: eu-central-1
   local_dir: public
