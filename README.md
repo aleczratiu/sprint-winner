@@ -17,6 +17,7 @@ Powered by **[Alecz Ratiu](https://twitter.com/aleczratiu)**
  4. PieChart with voters
  5. List with winners and reasons
  6. Closed/Open section vote from Admin
+ 7. **Dark/Light MODE**
 
 **Admin page:** 
  1. Create / Remove team/s
