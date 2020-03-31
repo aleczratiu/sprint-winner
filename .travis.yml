@@ -15,6 +15,7 @@ deploy:
   bucket: 'www.sprintman.cf'
   region: eu-central-1
   skip_cleanup: true
+  local_dir: build
   acl: public_read
 on:
   branch: master
